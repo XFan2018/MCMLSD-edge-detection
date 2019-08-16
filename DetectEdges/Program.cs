@@ -83,7 +83,7 @@ namespace DetectEdges
             //Matrix<Double> matrix_input = Matrix.Build.DenseOfArray(x);
             //double[,] y = { { -1, -2, -1 }, { 0, 0, 0 }, { 1, 2, 1 } };
             //Matrix<Double> matrix_filter = Matrix.Build.DenseOfArray(y);
-            //Matrix<Double> result3 = conv2(matrix_input, matrix_filter, "");
+            //Matrix<Double> result3 = conv2(matrix_input, matrix_filter, "same");
             //printMatrix(result3, 0, result3.ColumnCount, 0, result3.RowCount);
 
             ////convolve_2
@@ -184,14 +184,110 @@ namespace DetectEdges
             //Console.WriteLine("g1sc1:");
             //printMatrix(g1sc1, 0, g1sc1.GetLength(0), 0, g1sc1.GetLength(1));
 
-            //gradient
-            string g1scaleval = "05";
+            ////read_gy
+            string g1scaleval = "1";
             string fm2 = ".ascii";
-            string[] kern1_str = System.IO.File.ReadAllLines("/Users/leo/Projects/DetectEdges/DetectEdges/filters/gy" + g1scaleval + fm2);
-            double[,] kern1 = read_gy(kern1_str);
+            //string[] kern1_str = System.IO.File.ReadAllLines("/Users/leo/Projects/DetectEdges/DetectEdges/filters/g1y" + g1scaleval + fm2);
+            //double[,] kern1 = read_gy(kern1_str);
+            //printMatrix(kern1, 0, kern1.GetLength(0), 0, kern1.GetLength(1));
 
-            printMatrix(kern1, 0, kern1.GetLength(0), 0, kern1.GetLength(1));
+            // gradient
+            String filename = "/Users/leo/Projects/DetectEdges/DetectEdges/lena5.jpg";
+            Bitmap im = Accord.Imaging.Image.FromFile(filename);
+            double[,] matrix_im;
+            Accord.Imaging.Converters.ImageToMatrix imageToMatrix = new Accord.Imaging.Converters.ImageToMatrix();
+            imageToMatrix.Convert(im, out matrix_im);
+            //printMatrix(matrix_im, 0, matrix_im.GetLength(0), 0, matrix_im.GetLength(1));
+            Grayscale grayscale = new Grayscale(0.2989, 0.5870, 0.114);
+            Bitmap gray_im = grayscale.Apply(im);
+            gray_im.Save("/Users/leo/Downloads/gray.png");
+            double[,] matrix_grayim;
+            
+            imageToMatrix.Convert(gray_im, out matrix_grayim);
+            for (int i = 0; i < matrix_grayim.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix_grayim.GetLength(1); j++)
+                {
+                    matrix_grayim[i, j] = matrix_grayim[i, j] * 255;
+                }
+            }
+            printMatrix(matrix_grayim, 0, 20, 0, 20);
 
+           // double[][,] gauss_a = scalespace(matrix_grayim, 5, 1);
+           // //printMatrix(gauss_a[5], 299, 310, 299, 310);
+           //// double[][,] gr = gradient(5, 1, gauss_a, 0);
+
+           // //kern1
+           // string[] kern1_str = System.IO.File.ReadAllLines("/Users/leo/Projects/DetectEdges/DetectEdges/filters/gy" + g1scaleval + fm2);
+           // Matrix<Double> kern1 = Matrix.Build.DenseOfArray(read_gy(kern1_str));
+           // Matrix<Double> rc1 = convolve_2(Matrix.Build.DenseOfArray(gauss_a[5]), kern1, 0);
+            
+           // //kern2
+           // string[] kern2_str = System.IO.File.ReadAllLines("/Users/leo/Projects/DetectEdges/DetectEdges/filters/g1x" + g1scaleval + fm2);
+           // Matrix<Double> kern2 = Matrix.Build.DenseOfArray(read_gx(kern2_str));
+           // Matrix<Double> rc2 = convolve_2(rc1, kern2, 0);
+            
+           // //kern3
+           // string[] kern3_str = System.IO.File.ReadAllLines("/Users/leo/Projects/DetectEdges/DetectEdges/filters/gx" + g1scaleval + fm2);
+           // Matrix<Double> kern3 = Matrix.Build.DenseOfArray(read_gx(kern3_str));
+           // //Console.WriteLine("------kern3-----");
+           // Matrix<Double> rc3 = convolve_2(Matrix.Build.DenseOfArray(gauss_a[5]), kern3, 0);
+           
+           // //kern4
+           // string[] kern4_str = System.IO.File.ReadAllLines("/Users/leo/Projects/DetectEdges/DetectEdges/filters/g1y" + g1scaleval + fm2);
+           // Matrix<Double> kern4 = Matrix.Build.DenseOfArray(read_gy(kern4_str));
+           // //Console.WriteLine("------kern4-----");
+           // //printMatrix(kern4, 0, kern4.RowCount, 0, kern4.ColumnCount);
+           // Matrix<Double> rc4 = convolve_2(rc3, kern4, 0);
+           // Console.WriteLine("------rc4--------");      
+           // double[][,] gsteer = g1steer(rc2.ToArray(), rc4.ToArray());
+           // Console.WriteLine("m2 row:{0}, m2 col:{1}", gsteer[0].GetLength(0), gsteer[1].GetLength(1));
+           // printMatrix(gsteer[0], 299, 310, 299, 310);
+           // Console.WriteLine("d2 row:{0}, d2 col:{1}", gsteer[1].GetLength(0), gsteer[1].GetLength(1));
+           // printMatrix(gsteer[1], 299, 310, 299, 310);
+
+
+
+
+
+
+
+
+
+            //printMatrix(kern1, 0, kern1.RowCount, 0, kern1.ColumnCount);
+            //Matrix<double> result = convolve_2(Matrix.Build.DenseOfArray(matrix_grayim), kern1, 0);
+            //printMatrix(result, 299, 310, 299, 310);
+            //Console.WriteLine("row:{0}, col:{1}", matrix_grayim.GetLength(0), matrix_grayim.GetLength(1));
+            //Accord.Imaging.Converters.MatrixToImage matrixToImage = new Accord.Imaging.Converters.MatrixToImage();
+            //matrixToImage.Convert(matrix_grayim, out gray_im);
+            //gray_im.Save("/Users/leo/Downloads/gray2.png");
+            ////Console.WriteLine("length0:{0}, length1:{1}", matrix_grayim.GetLength(0), matrix_grayim.GetLength(1));
+            //int scale = 5;
+            //double[][,] gauss_imgs = scalespace(matrix_grayim, scale, 1);
+            //double[][,] gradient_result = gradient(5, 1, gauss_imgs, 0);
+            //Bitmap image_g1mag;
+            //double[,] g1dir = gradient_result[1];
+            //for (int i = 0; i < matrix_grayim.GetLength(0); i++)
+            //{
+            //    for (int j = 0; j < matrix_grayim.GetLength(1); j++)
+            //    {
+            //        g1dir[i, j] = g1dir[i, j] / 255;
+            //    }
+            //}
+            //matrixToImage.Convert(g1dir, out image_g1mag);
+            //image_g1mag.Save("/Users/leo/Downloads/g1dir.png");
+            //printMatrix(gradient_result[0], 0, gradient_result[0].GetLength(0), 0, gradient_result[1].GetLength(1));
+
+
+
+            ////printMatrix(rc4, 0, rc4.RowCount, 0, rc4.ColumnCount);
+            //double[][,] g1steer_result = g1steer(rc2.ToArray(), rc4.ToArray());
+            //double[,] m2 = g1steer_result[0];
+            //double[,] d2 = g1steer_result[1];
+            //printMatrix(m2, 0, m2.GetLength(0), 0, m2.GetLength(1));
+            //Bitmap image_m2;
+            //matrixToImage.Convert(m2, out image_m2);
+            //image_m2.Save("/Users/leo/Downloads/m2.png");
 
 
         }
@@ -308,6 +404,8 @@ namespace DetectEdges
         //##############################################################################
         static Matrix<Double> convolve_2(Matrix<Double> mimg, Matrix<Double> filter, int bc)
         {
+            Console.WriteLine("enter convolve_2");
+
             Matrix<Double> pad_img, cimg;
             int k;
             double[] dimention = { filter.RowCount, filter.ColumnCount };
@@ -317,6 +415,7 @@ namespace DetectEdges
                 pad_img = pad_matrix(mimg, dimention);
                 cimg = conv2(pad_img, filter,"same");
                 cimg = trim_matrix(cimg, dimention);
+        
             }
             else
             {
@@ -496,6 +595,8 @@ namespace DetectEdges
         //##############################################################################
         static Matrix<Double> d2gauss(int n1, double std1, int n2, double std2, double theta, double max1)
         {
+            Console.WriteLine("enter d2gauss");
+
             double[] n1_vector = new double[n1];
             double[] n2_vector = new double[n2];
             //result of meshgrid
@@ -590,6 +691,8 @@ namespace DetectEdges
         //##############################################################################
         static Matrix<Double> gauss(Matrix<Double> x, double std)
         {
+            Console.WriteLine("enter gauss");
+
             Matrix<Double> result = Matrix<Double>.Build.Dense(x.RowCount, x.ColumnCount);
             for (int i = 0; i < x.RowCount; i++)
             {
@@ -613,6 +716,8 @@ namespace DetectEdges
         //########################################################################################
         static Tuple<double, int> setvalues(double scale)
         {
+            Console.WriteLine("enter setvalue");
+
             double stdd;
             int sizz;
             if (scale < 3)
@@ -630,7 +735,7 @@ namespace DetectEdges
 
         //#######################################################################################
         //#
-        //#                          scalescape  
+        //#                          scalespace  
         //#
         //#     Create a series of Gaussian blurred images according to a 
         //#     given maximum scale.
@@ -644,6 +749,8 @@ namespace DetectEdges
         //#######################################################################################
         static double[][,] scalespace(double[,] mimg, int maxscale, int conv_type)
         {
+            Console.WriteLine("enter scalespace");
+
             double[][,] blurred_imgs = new double[maxscale+1][,];
             double stdd;
             int sizz;
@@ -725,6 +832,7 @@ namespace DetectEdges
         //##############################################################################
         static double[][,] g1steer(double[,] g1x, double[,] g1y)
         {
+            Console.WriteLine("enter g1steer");
             double[][,] result = new double[2][,];
             //initial g1mag with zeros
             Matrix<Double> g1mag = Matrix.Build.Dense(g1x.GetLength(0), g1x.GetLength(1));
@@ -775,6 +883,7 @@ namespace DetectEdges
         //##############################################################################
         static double[][,] g1scale(double[,] g1mag2, double[,] g1dir2, int scale, double noise, int b_est)
         {
+            Console.WriteLine("enter g1scale");
             double[][,] result = new double[3][,];
             int krad;
             double[,] g1mag1, g1dir1, g1sc1;
@@ -792,7 +901,7 @@ namespace DetectEdges
             {
                 krad = (int) Math.Ceiling(4.6 * Math.Sqrt(Math.Pow(2, 2*(scale - 2)) - 1));
             }
-            Console.WriteLine("krad = {0}", krad);
+            
             if (scale == 1)
             {
                 g1mag1 = Matrix.Build.Dense(g1mag2.GetLength(0), g1mag2.GetLength(1)).ToArray();
@@ -862,8 +971,6 @@ namespace DetectEdges
                         }
                     }
 
-                    printMatrix(scaleMatrix, 0, scaleMatrix.GetLength(0), 0, scaleMatrix.GetLength(1));
-
                     for (int i = 0; i < scaleMatrix.GetLength(0); i++)
                     {
                         for (int j = 0; j < scaleMatrix.GetLength(1); j++)
@@ -905,7 +1012,6 @@ namespace DetectEdges
             for (int i = 0; i < kern_col; i++)
             {
                 String s = kern_split[i].Trim();
-                Console.WriteLine(s + "***");
                 kern[0, i] = double.Parse(s);
             }
             return kern;
@@ -934,9 +1040,11 @@ namespace DetectEdges
         //#         Computes non-zero gradient in the luminance function by 
         //# 
         //#####################################################################################
-        static double[][][,] gradient(int maxscale, double noise, double[][,] gauss_a, int conv_type)
+        static double[][,] gradient(int maxscale, double noise, double[][,] gauss_a, int conv_type)
         {
-            double[][][,] g1scale_result = new double[maxscale+1][][,];
+            Console.WriteLine("enter gradient");
+
+            double[][,] g1scale_result = new double[3][,];
             String g1scaleval, fm2 = ".ascii";
             for (int scale = 1; scale <= maxscale; scale++)
             {
@@ -957,36 +1065,38 @@ namespace DetectEdges
                 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
                 //kern1
-                string[] kern1_str = System.IO.File.ReadAllLines("/Users/leo/Projects/DetectEdges/DetectEdgesstr/filters/gy" + g1scaleval + fm2);
+                string[] kern1_str = System.IO.File.ReadAllLines("/Users/leo/Projects/DetectEdges/DetectEdges/filters/gy" + g1scaleval + fm2);
                 Matrix<Double> kern1 = Matrix.Build.DenseOfArray(read_gy(kern1_str));
                 Matrix<Double> rc1 = convolve_2(mimg, kern1, conv_type);
 
                 //kern2
-                string[] kern2_str = System.IO.File.ReadAllLines("/Users/leo/Projects/DetectEdges/DetectEdgesstr/filters/g1x" + g1scaleval + fm2);
+                string[] kern2_str = System.IO.File.ReadAllLines("/Users/leo/Projects/DetectEdges/DetectEdges/filters/g1x" + g1scaleval + fm2);
                 Matrix<Double> kern2 = Matrix.Build.DenseOfArray(read_gx(kern2_str));
-                Matrix<Double> rc2 = convolve_2(mimg, kern2, conv_type);
+                Matrix<Double> rc2 = convolve_2(rc1, kern2, conv_type);
 
                 //kern3
-                string[] kern3_str = System.IO.File.ReadAllLines("/Users/leo/Projects/DetectEdges/DetectEdgesstr/filters/gx" + g1scaleval + fm2);
+                string[] kern3_str = System.IO.File.ReadAllLines("/Users/leo/Projects/DetectEdges/DetectEdges/filters/gx" + g1scaleval + fm2);
                 Matrix<Double> kern3 = Matrix.Build.DenseOfArray(read_gx(kern3_str));
                 Matrix<Double> rc3 = convolve_2(mimg, kern3, conv_type);
 
                 //kern4
-                string[] kern4_str = System.IO.File.ReadAllLines("/Users/leo/Projects/DetectEdges/DetectEdgesstr/filters/g1y" + g1scaleval + fm2);
-                Matrix<Double> kern4 = Matrix.Build.DenseOfArray(read_gy(kern3_str));
-                Matrix<Double> rc4 = convolve_2(mimg, kern4, conv_type);
+                string[] kern4_str = System.IO.File.ReadAllLines("/Users/leo/Projects/DetectEdges/DetectEdges/filters/g1y" + g1scaleval + fm2);
+                Matrix<Double> kern4 = Matrix.Build.DenseOfArray(read_gy(kern4_str));
+                Matrix<Double> rc4 = convolve_2(rc3, kern4, conv_type);
 
                 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                 //^     Calculate magnitude and direction of the gradient:
                 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                 double[][,] g1steer_result = g1steer(rc2.ToArray(), rc4.ToArray());
                 double[,] m2 = g1steer_result[0];
+
                 double[,] d2 = g1steer_result[1];
 
                 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                 //^     Augment multi-scale Gaussian Gradient maps:
                 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                g1scale_result[scale] = g1scale(m2, d2, scale, noise, 0);
+                g1scale_result = g1scale(m2, d2, scale, noise, 0);
+
             }
             return g1scale_result;
         }
