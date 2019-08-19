@@ -32,12 +32,13 @@
     <PackageReference Include="CoreCompat.System.Drawing.v2" Version="5.2.0-preview1-r131" />
     <PackageReference Include="Accord.Controls.Imaging" Version="3.8.0" />
     <PackageReference Include="MathNet.Numerics" Version="4.8.1" />
-    <PackageReference Include="Microsoft.Net.Compilers" Version="3.2.0">
+    <PackageReference Include="Microsoft.Net.Compilers" Version="3.2.1">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Accord.Math.Noncommercial" Version="3.8.0" />
     <PackageReference Include="Accord.Math" Version="3.8.0" />
+    <PackageReference Include="MathNet.Numerics.Data.Matlab" Version="4.0.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="dog.jpg" />

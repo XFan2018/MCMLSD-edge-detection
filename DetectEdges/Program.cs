@@ -6,6 +6,7 @@ using Accord.Imaging.Filters;
 using Accord.Controls;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
+using MathNet.Numerics.Data.Matlab;
 
 
 namespace DetectEdges
@@ -211,7 +212,7 @@ namespace DetectEdges
                     matrix_grayim[i, j] = matrix_grayim[i, j] * 255;
                 }
             }
-            printMatrix(matrix_grayim, 0, 20, 0, 20);
+            //printMatrix(matrix_grayim, 0, 20, 0, 20);
             Console.WriteLine(sizeof(double));
 
             double[][,] gauss_a = scalespace(matrix_grayim, 5, 1);
@@ -225,31 +226,41 @@ namespace DetectEdges
             {
                 for (int j = 0; j < gr[0].GetLength(1); j++)
                 {
-                    gr[0][i, j] = (gr[0][i, j] / 255);
-                    gr[1][i, j] = (gr[1][i, j] / 255);
-                    gr[2][i, j] = (gr[2][i, j] / 255);
+                    gr[0][i, j] = gr[0][i, j] / 255;
+                    gr[1][i, j] = gr[1][i, j] / 255;
+                    gr[2][i, j] = gr[2][i, j] / 255;
                 }
             }
 
-            Bitmap g1mag, g1dir, g1sc;
+            Bitmap g1mag, g1dir, g1sc, g1mag_mat_img;
             Accord.Imaging.Converters.MatrixToImage matrixToImage = new Accord.Imaging.Converters.MatrixToImage();
             matrixToImage.Convert(gr[0], out g1mag);
             matrixToImage.Convert(gr[1], out g1dir);
             matrixToImage.Convert(gr[2], out g1sc);
-            g1mag.Save("/Users/leo/Downloads/g1mag1.png");
-            g1dir.Save("/Users/leo/Downloads/g1dir1.png");
-            g1sc.Save("/Users/leo/Downloads/g1sc1.png");
+            g1mag.Save("/Users/leo/Downloads/g1mag1.jpg");
+            g1dir.Save("/Users/leo/Downloads/g1dir1.jpg");
+            g1sc.Save("/Users/leo/Downloads/g1sc1.jpg");
             
             for (int i = 0; i < matrix_grayim.GetLength(0); i++)
             {
                 for (int j = 0; j < matrix_grayim.GetLength(1); j++)
                 {
                     matrix_grayim[i, j] = (matrix_grayim[i, j] / 255);
-         
                 }
             }
             matrixToImage.Convert(matrix_grayim, out gray_im);
             gray_im.Save("/Users/leo/Downloads/gray.png");
+
+            Matrix<double> matlab_g1mag = MatlabReader.Read<double>("/Users/leo/Projects/MCMLSD/matlab.mat");
+            for (int i = 0; i < matlab_g1mag.RowCount; i++)
+            {
+                for (int j = 0; j < matlab_g1mag.ColumnCount; j++)
+                {
+                    matlab_g1mag[i, j] = matlab_g1mag[i, j] / 255;
+                }
+            }
+            matrixToImage.Convert(matlab_g1mag.ToArray(), out g1mag_mat_img);
+            g1mag_mat_img.Save("/Users/leo/Downloads/mat.png");
 
             //Console.WriteLine("1");
             //printMatrix(gr[0], 299, 310, 299, 310);
@@ -888,7 +899,7 @@ namespace DetectEdges
             {
                 for (int j = 0; j < g1x.GetLength(1); j++)
                 {
-                    if ((! double.Equals(g1x[i, j], 0)) && (! double.Equals(g1y[i, j], 0)))
+                    if ((Math.Abs(g1x[i, j])>Double.Epsilon) && (Math.Abs(g1y[i, j])>Double.Epsilon))
                     {
                         g1dir[i, j] = Math.Atan2(-g1y[i,j], g1x[i,j]);
                         g1mag[i, j] = Math.Sqrt(g1x[i, j] * g1x[i, j] + g1y[i, j] * g1y[i, j]);
@@ -1017,6 +1028,9 @@ namespace DetectEdges
                         }
                     }
 
+                    Console.WriteLine("scaleMatrix scale={0}", scale);
+                    printMatrix(scaleMatrix, 199, 210, 199, 210);
+
                     //magMatrix : mmat
                     double[,] magMatrix = new double[g1mag2.GetLength(0)-2*krad, g1mag2.GetLength(1)-2*krad];
                     for (int i = 0; i < g1mag2.GetLength(0) - 2*krad; i++)
@@ -1026,18 +1040,18 @@ namespace DetectEdges
                             magMatrix[i, j] = g1mag2[krad + i, krad + j];
                         }
                     }
+                    
 
                     for (int i = 0; i < scaleMatrix.GetLength(0); i++)
                     {
                         for (int j = 0; j < scaleMatrix.GetLength(1); j++)
                         {
                             //f = find((smat==0) & (mmat>=thresh));
-                            if ((double.Equals(scaleMatrix[i, j], 0)) && (magMatrix[i, j] >= thresh))
+                            if (Math.Abs(scaleMatrix[i, j]) < Double.Epsilon && (magMatrix[i, j] >= thresh))
                             {
                                 //g1mag1(K(f)) = g1mag2(K(f));
                                 //g1dir1(K(f)) = g1dir2(K(f));
                                 //g1sc1(K(f)) = scale;
-                                Console.WriteLine("i:{0}, j:{1}", i, j);
                                 g1mag1[matrix_i[i, j], matrix_j[i, j]] = g1mag2[matrix_i[i, j], matrix_j[i, j]];
                                 g1dir1[matrix_i[i, j], matrix_j[i, j]] = g1dir2[matrix_i[i, j], matrix_j[i, j]];
                                 g1sc1[matrix_i[i, j], matrix_j[i, j]] = scale;
@@ -1169,6 +1183,9 @@ namespace DetectEdges
                 g1mag1 = g1scale_result[0];
                 g1dir1 = g1scale_result[1];
                 g1sc1 = g1scale_result[2];
+
+                Console.WriteLine("g1mag1 scale = {0}", scale);
+                printMatrix(g1mag1, 299, 310, 299, 310);
 
             }
             return g1scale_result;
