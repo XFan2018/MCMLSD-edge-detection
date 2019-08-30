@@ -271,7 +271,20 @@ namespace DetectEdges
             //imageToMatrix.Convert(imgg, out imgx);
             //double[,]g2 = g2steer(imgx,imgx,imgx,imgx);
             //printMatrix(g2,199,210,199,210);
-            
+
+            //g2scale
+            string filename = "/Users/leo/Projects/DetectEdges/DetectEdges/img.jpg";
+            Bitmap img = Accord.Imaging.Image.FromFile(filename);
+            Grayscale grayscale = new Grayscale(0.2989, 0.5870, 0.114);
+            Bitmap imgg = grayscale.Apply(img);
+            Accord.Imaging.Converters.ImageToMatrix imageToMatrix = new Accord.Imaging.Converters.ImageToMatrix();
+            double[,] imgx;
+            imageToMatrix.Convert(imgg, out imgx);
+            double[][,] result;
+            double[,] g2sc1 = new double[imgx.GetLength(0), imgx.GetLength(1)];
+            result = g2scale(imgx, imgx, g2sc1, 4, 1, 0);
+            printMatrix(result[1], 199, 210, 199, 210);
+
 
         }
 
@@ -1269,7 +1282,6 @@ namespace DetectEdges
                 result[0] = g2mag1;
                 result[1] = g2sc1;
                 return result;
-
             }
         }
 
