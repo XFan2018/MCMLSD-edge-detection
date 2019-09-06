@@ -141,13 +141,6 @@ namespace DetectEdges
             //g2all.Save("/Users/leo/Downloads/g2all.jpg");
             //im.Save("/Users/leo/Downloads/im.jpg");
 
-            //Console.WriteLine(0.5 * (1 - 0.4868) * -0.18 - (-0.8735) * (-5.075) + 0.5 * (1 + 0.4868) * (-0.8104));
-            //Console.WriteLine(Math.Cos(2 * (-1.0396)));
-            //Console.WriteLine(Math.Sin(2 * (-1.0396)));
-
-
-
-
         }
 
 
