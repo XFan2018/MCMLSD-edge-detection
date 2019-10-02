@@ -7,7 +7,9 @@ using Accord.Controls;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 using MathNet.Numerics.Data.Matlab;
-
+using csmatio.types;
+using csmatio.io;
+using System.Collections.Generic;
 
 namespace DetectEdges
 {
@@ -58,88 +60,105 @@ namespace DetectEdges
             g1dir1 = gr[1];
             g1sc1 = gr[2];
 
-            for (int i = 0; i < gr[0].GetLength(0); i++)
-            {
-                for (int j = 0; j < gr[0].GetLength(1); j++)
-                {
-                    g1mag1[i, j] = g1mag1[i, j] / 255;
-                    g1dir1[i, j] = g1dir1[i, j] / 255;
-                    g1sc1[i, j] = g1sc1[i, j] / 255;
-                }
-            }
+            //for (int i = 0; i < gr[0].GetLength(0); i++)
+            //{
+            //    for (int j = 0; j < gr[0].GetLength(1); j++)
+            //    {
+            //        g1mag1[i, j] = g1mag1[i, j] / 255;
+            //        g1dir1[i, j] = g1dir1[i, j] / 255;
+            //        g1sc1[i, j] = g1sc1[i, j] / 255;
+            //    }
+            //}
 
-            Console.WriteLine("g1dir---");
-            printMatrix(gr[1], 499, 510, 499, 510);
+            
 
-            Console.WriteLine("g1dir1------");
-            printMatrix(g1dir1, 499, 510, 499, 510);
-
-            for (int i = 0; i < gauss_a[0].GetLength(0); i++)
-            {
-                for (int j = 0; j < gauss_a[0].GetLength(1); j++)
-                {
-                    matrix_grayim[i, j] = matrix_grayim[i, j] / 255;
-                    gauss_a[1][i, j] = gauss_a[1][i, j] / 255;
-                    gauss_a[2][i, j] = gauss_a[2][i, j] / 255;
-                    gauss_a[3][i, j] = gauss_a[3][i, j] / 255;
-                    gauss_a[4][i, j] = gauss_a[4][i, j] / 255;
-                    gauss_a[5][i, j] = gauss_a[5][i, j] / 255;
+            //for (int i = 0; i < gauss_a[0].GetLength(0); i++)
+            //{
+            //    for (int j = 0; j < gauss_a[0].GetLength(1); j++)
+            //    {
+            //        matrix_grayim[i, j] = matrix_grayim[i, j] / 255;
+            //        gauss_a[1][i, j] = gauss_a[1][i, j] / 255;
+            //        gauss_a[2][i, j] = gauss_a[2][i, j] / 255;
+            //        gauss_a[3][i, j] = gauss_a[3][i, j] / 255;
+            //        gauss_a[4][i, j] = gauss_a[4][i, j] / 255;
+            //        gauss_a[5][i, j] = gauss_a[5][i, j] / 255;
 
 
-                }
-            }
+            //    }
+            //}
 
-            Bitmap g1mag, g1dir, g1sc, gauss_a1, gauss_a2, gauss_a3, gauss_a4, gauss_a5;
+            //Bitmap g1mag, g1dir, g1sc, gauss_a1, gauss_a2, gauss_a3, gauss_a4, gauss_a5;
             Accord.Imaging.Converters.MatrixToImage matrixToImage = new Accord.Imaging.Converters.MatrixToImage();
 
-            matrixToImage.Convert(g1mag1, out g1mag);
-            matrixToImage.Convert(g1dir1, out g1dir);
-            matrixToImage.Convert(g1sc1, out g1sc);
-            matrixToImage.Convert(matrix_grayim, out gray_im);
-            matrixToImage.Convert(gauss_a[1], out gauss_a1);
-            matrixToImage.Convert(gauss_a[2], out gauss_a2);
-            matrixToImage.Convert(gauss_a[3], out gauss_a3);
-            matrixToImage.Convert(gauss_a[4], out gauss_a4);
-            matrixToImage.Convert(gauss_a[5], out gauss_a5);
+            //matrixToImage.Convert(g1mag1, out g1mag);
+            //matrixToImage.Convert(g1dir1, out g1dir);
+            //matrixToImage.Convert(g1sc1, out g1sc);
+            //matrixToImage.Convert(matrix_grayim, out gray_im);
+            //matrixToImage.Convert(gauss_a[1], out gauss_a1);
+            //matrixToImage.Convert(gauss_a[2], out gauss_a2);
+            //matrixToImage.Convert(gauss_a[3], out gauss_a3);
+            //matrixToImage.Convert(gauss_a[4], out gauss_a4);
+            //matrixToImage.Convert(gauss_a[5], out gauss_a5);
 
-            g1mag.Save("/Users/leo/Downloads/g1mag1.jpg");
-            g1dir.Save("/Users/leo/Downloads/g1dir1.jpg");
-            g1sc.Save("/Users/leo/Downloads/g1sc1.jpg");
-            gray_im.Save("/Users/leo/Downloads/gray_im.jpg");
-            gauss_a1.Save("/Users/leo/Downloads/gauss_a1.jpg");
-            gauss_a2.Save("/Users/leo/Downloads/gauss_a2.jpg");
-            gauss_a3.Save("/Users/leo/Downloads/gauss_a3.jpg");
-            gauss_a4.Save("/Users/leo/Downloads/gauss_a4.jpg");
-            gauss_a5.Save("/Users/leo/Downloads/gauss_a5.jpg");
+            //g1mag.Save("/Users/leo/Downloads/g1mag1.jpg");
+            //g1dir.Save("/Users/leo/Downloads/g1dir1.jpg");
+            //g1sc.Save("/Users/leo/Downloads/g1sc1.jpg");
+            //gray_im.Save("/Users/leo/Downloads/gray_im.jpg");
+            //gauss_a1.Save("/Users/leo/Downloads/gauss_a1.jpg");
+            //gauss_a2.Save("/Users/leo/Downloads/gauss_a2.jpg");
+            //gauss_a3.Save("/Users/leo/Downloads/gauss_a3.jpg");
+            //gauss_a4.Save("/Users/leo/Downloads/gauss_a4.jpg");
+            //gauss_a5.Save("/Users/leo/Downloads/gauss_a5.jpg");
 
-            //double[][,] d2 = derivative2nd(gr[1], 5, 1, gauss_a, 0);
+            // calculate 2nd derivative map
+            double[][,] d2 = derivative2nd(gr[1], 5, 1, gauss_a, 0);
 
-            //for (int i = 0; i < d2[0].GetLength(0); i++)
-            //{
-            //    for (int j = 0; j < d2[0].GetLength(1); j++)
-            //    {
-            //        d2[0][i, j] = d2[0][i, j] / 255;
-            //        d2[1][i, j] = d2[1][i, j] / 255;
-            //    }
-            //}
+            for (int i = 0; i < d2[0].GetLength(0); i++)
+            {
+                for (int j = 0; j < d2[0].GetLength(1); j++)
+                {
+                    d2[0][i, j] = d2[0][i, j] / 255;
+                    d2[1][i, j] = d2[1][i, j] / 255;
+                }
+            }
 
-            //for (int i = 0; i < d2[2].GetLength(0); i++)
-            //{
-            //    for (int j = 0; j < d2[2].GetLength(1); j++)
-            //    {
-            //        d2[2][i, j] = d2[2][i, j] / 255;
+            for (int i = 0; i < d2[2].GetLength(0); i++)
+            {
+                for (int j = 0; j < d2[2].GetLength(1); j++)
+                {
+                    d2[2][i, j] = d2[2][i, j] / 255;
 
-            //    }
-            //}
+                }
+            }
 
-            //Bitmap g2mag, g2sc, g2all;
-            //matrixToImage.Convert(d2[0], out g2mag);
-            //matrixToImage.Convert(d2[1], out g2sc);
-            //matrixToImage.Convert(d2[2], out g2all);
-            //g2mag.Save("/Users/leo/Downloads/g2mag.jpg");
-            //g2sc.Save("/Users/leo/Downloads/g2sc.jpg");
-            //g2all.Save("/Users/leo/Downloads/g2all.jpg");
-            //im.Save("/Users/leo/Downloads/im.jpg");
+            Bitmap g2mag, g2sc, g2all;
+            matrixToImage.Convert(d2[0], out g2mag);
+            matrixToImage.Convert(d2[1], out g2sc);
+            matrixToImage.Convert(d2[2], out g2all);
+            g2mag.Save("/Users/leo/Downloads/g2mag.jpg");
+            g2sc.Save("/Users/leo/Downloads/g2sc.jpg");
+            g2all.Save("/Users/leo/Downloads/g2all.jpg");
+            im.Save("/Users/leo/Downloads/im.jpg");
+
+            //export c# array to mat file
+            double[][] d2_g2mag = new double[d2[0].GetLength(0)][];
+            for (int i = 0; i < d2[0].GetLength(0); i++)
+            {
+                d2_g2mag[i] = new double[d2[1].GetLength(1)];
+                for (int j = 0; j < d2[1].GetLength(1); j++)
+                {
+
+                    d2_g2mag[i][j] = d2[0][i, j];
+                }
+            }
+            MLDouble mlDoubleArray = new MLDouble("Matrix_3_by_3", d2_g2mag);
+            List<MLArray> mlList = new List<MLArray>();
+            mlList.Add(mlDoubleArray);
+            MatFileWriter mfw = new MatFileWriter("/Users/leo/Projects/DetectEdges/DetectEdges/data.mat", mlList, false);
+
+
+
+           
 
         }
 
@@ -266,7 +285,6 @@ namespace DetectEdges
                 pad_img = pad_matrix(mimg, dimention);
                 cimg = conv2(pad_img, filter,"same");
                 cimg = trim_matrix(cimg, dimention);
-        
             }
             else
             {
@@ -386,7 +404,7 @@ namespace DetectEdges
         //##############################################################################
         static Matrix<Double> conv2(Matrix<Double> A, Matrix<Double> B, string s)
         {
-            
+            Console.Write("enter conv2");
             int rowA = A.RowCount;
             int colA = A.ColumnCount;
             int rowB = B.RowCount;
@@ -701,7 +719,7 @@ namespace DetectEdges
             {
                 for (int j = 0; j < g1x.GetLength(1); j++)
                 {
-                    if ((Math.Abs(g1x[i, j])>Double.Epsilon) && (Math.Abs(g1y[i, j])>Double.Epsilon))
+                    if ((Math.Abs(g1x[i, j])> 0.00000000001) && (Math.Abs(g1y[i, j])> 0.00000000001))
                     {
                         g1dir[i, j] = Math.Atan2(-g1y[i,j], g1x[i,j]);
                         g1mag[i, j] = Math.Sqrt(g1x[i, j] * g1x[i, j] + g1y[i, j] * g1y[i, j]);
@@ -839,7 +857,7 @@ namespace DetectEdges
                         for (int j = 0; j < scaleMatrix.GetLength(1); j++)
                         {
                             //f = find((smat==0) & (mmat>=thresh));
-                            if (Math.Abs(scaleMatrix[i, j]) < Double.Epsilon && (magMatrix[i, j] >= thresh))
+                            if (Math.Abs(scaleMatrix[i, j]) < 0.00000000001 && (magMatrix[i, j] >= thresh))
                             {
                                 //g1mag1(K(f)) = g1mag2(K(f));
                                 //g1dir1(K(f)) = g1dir2(K(f));
@@ -1138,7 +1156,7 @@ namespace DetectEdges
                         for (int j = 0; j < magMatrix1.GetLength(1); j++)
                         {
                             //f = find(abs(magmat1) == 0 & abs(magmat2) >= thresh);
-                            if (Math.Abs(magMatrix1[i, j]) < Double.Epsilon && Math.Abs(magMatrix2[i, j]) >= thresh)
+                            if (Math.Abs(magMatrix1[i, j]) < 0.00000000001 && Math.Abs(magMatrix2[i, j]) >= thresh)
                             {
                                 //g1mag1(K(f)) = g1mag2(K(f));
                                 //g1dir1(K(f)) = g1dir2(K(f));
@@ -1230,18 +1248,6 @@ namespace DetectEdges
                 Matrix<Double> kern6 = Matrix.Build.DenseOfArray(read_gy(kern6_str));
                 Matrix<Double> rc6 = convolve_2(rc5, kern6, conv_type);
 
-                Console.WriteLine("mimg {0}", scale);
-                printMatrix(mimg, 399, 410, 399, 410);
-
-                Console.WriteLine("rc2 {0}", scale);
-                printMatrix(rc2, 399, 410, 399, 410);
-
-                Console.WriteLine("rc4 {0}", scale);
-                printMatrix(rc4, 399, 410, 399, 410);
-
-                Console.WriteLine("rc6 {0}", scale);
-                printMatrix(rc6, 399, 410, 399, 410);
-
                 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                 //^     Calculate the 2nd Gaussian derivative:
                 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1255,12 +1261,6 @@ namespace DetectEdges
                     }
                 }
 
-                Console.WriteLine("g2 {0}", scale);
-                printMatrix(g2, 399, 410, 399, 410);
-
-                Console.WriteLine("g2all {0}", scale);
-                printMatrix(g2all, 399 + (scale - 1) * 512, 410 + (scale - 1) * 512, 399, 410);
-
                 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                 //^     Augment multi-scale Gaussian directional 2nd derivative maps:
                 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1272,14 +1272,6 @@ namespace DetectEdges
             result[0] = g2scale_result[0];
             result[1] = g2scale_result[1];
             result[2] = g2all;
-
-            Console.WriteLine("g2mag");
-            printMatrix(result[0], 399, 410, 399, 410);
-
-            Console.WriteLine("g2sc");
-            printMatrix(result[1], 399, 410, 399, 410);
-
-
             return result;
         }
 
