@@ -45,4 +45,9 @@
   <ItemGroup>
     <None Remove="dog.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Emgu.CV.World.Mac">
+      <HintPath>..\..\..\emgucv\libs\Emgu.CV.World.Mac.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
